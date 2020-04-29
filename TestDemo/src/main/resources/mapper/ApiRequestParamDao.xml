@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shixiang.demo.dao.ApiRequestParamDao">
+
+    <resultMap type="com.shixiang.demo.entity.ApiRequestParam" id="ApiRequestParamMap">
+        <result property="requestParamId" column="request_param_id" jdbcType="INTEGER"/>
+        <result property="apiId" column="api_id" jdbcType="INTEGER"/>
+        <result property="paramName" column="param_name" jdbcType="VARCHAR"/>
+        <result property="colName" column="col_name" jdbcType="VARCHAR"/>
+        <result property="dataType" column="data_type" jdbcType="VARCHAR"/>
+        <result property="operator" column="operator" jdbcType="VARCHAR"/>
+        <result property="required" column="required" jdbcType="VARCHAR"/>
+        <result property="demoValue" column="demo_value" jdbcType="VARCHAR"/>
+        <result property="defaultValue" column="default_value" jdbcType="VARCHAR"/>
+        <result property="paramPosition" column="param_position" jdbcType="VARCHAR"/>
+        <result property="paramDesc" column="param_desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ApiRequestParamMap">
+        select
+          request_param_id, api_id, param_name, col_name, data_type, operator, required, demo_value, default_value, param_position, param_desc
+        from test.api_request_param
+        where request_param_id = #{requestParamId}
+    </select>
+    <!--查询单个-->
+    <select id="findRequsetParamByApiId" resultMap="ApiRequestParamMap">
+        select
+          request_param_id, api_id, param_name, col_name, data_type, operator, required, demo_value, default_value, param_position, param_desc
+        from test.api_request_param
+        where api_id = ${apiId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ApiRequestParamMap">
+        select
+          request_param_id, api_id, param_name, col_name, data_type, operator, required, demo_value, default_value, param_position, param_desc
+        from test.api_request_param
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ApiRequestParamMap">
+        select
+          request_param_id, api_id, param_name, col_name, data_type, operator, required, demo_value, default_value, param_position, param_desc
+        from test.api_request_param
+        <where>
+            <if test="requestParamId != null">
+                and request_param_id = #{requestParamId}
+            </if>
+            <if test="apiId != null">
+                and api_id = #{apiId}
+            </if>
+            <if test="paramName != null and paramName != ''">
+                and param_name = #{paramName}
+            </if>
+            <if test="colName != null and colName != ''">
+                and col_name = #{colName}
+            </if>
+            <if test="dataType != null and dataType != ''">
+                and data_type = #{dataType}
+            </if>
+            <if test="operator != null and operator != ''">
+                and operator = #{operator}
+            </if>
+            <if test="required != null and required != ''">
+                and required = #{required}
+            </if>
+            <if test="demoValue != null and demoValue != ''">
+                and demo_value = #{demoValue}
+            </if>
+            <if test="defaultValue != null and defaultValue != ''">
+                and default_value = #{defaultValue}
+            </if>
+            <if test="paramPosition != null and paramPosition != ''">
+                and param_position = #{paramPosition}
+            </if>
+            <if test="paramDesc != null and paramDesc != ''">
+                and param_desc = #{paramDesc}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="requestParamId" useGeneratedKeys="true">
+        insert into test.api_request_param(api_id, param_name, col_name, data_type, operator, required, demo_value, default_value, param_position, param_desc)
+        values (#{apiId}, #{paramName}, #{colName}, #{dataType}, #{operator}, #{required}, #{demoValue}, #{defaultValue}, #{paramPosition}, #{paramDesc})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.api_request_param
+        <set>
+            <if test="apiId != null">
+                api_id = #{apiId},
+            </if>
+            <if test="paramName != null and paramName != ''">
+                param_name = #{paramName},
+            </if>
+            <if test="colName != null and colName != ''">
+                col_name = #{colName},
+            </if>
+            <if test="dataType != null and dataType != ''">
+                data_type = #{dataType},
+            </if>
+            <if test="operator != null and operator != ''">
+                operator = #{operator},
+            </if>
+            <if test="required != null and required != ''">
+                required = #{required},
+            </if>
+            <if test="demoValue != null and demoValue != ''">
+                demo_value = #{demoValue},
+            </if>
+            <if test="defaultValue != null and defaultValue != ''">
+                default_value = #{defaultValue},
+            </if>
+            <if test="paramPosition != null and paramPosition != ''">
+                param_position = #{paramPosition},
+            </if>
+            <if test="paramDesc != null and paramDesc != ''">
+                param_desc = #{paramDesc},
+            </if>
+        </set>
+        where request_param_id = #{requestParamId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from test.api_request_param where request_param_id = #{requestParamId}
+    </delete>
+
+</mapper>

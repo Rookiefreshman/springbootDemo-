@@ -1,0 +1,26 @@
+server:
+  port: 9002
+#  servlet:
+#    context-path: /demo
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:/mapper/*Dao.xml
+  type-aliases-package: com.shixiang.demo.entity
+
+logging:
+  level:
+    com:
+      shixiang:
+        demo:
+          dao: DEBUG
+#我们配置公共的这个类不要放在全局可以扫描的mapper下，不然会报错
+#mapper:
+#  mappers: com.shixiang.demo.dao.TMapper
+#  identity: MYSQL

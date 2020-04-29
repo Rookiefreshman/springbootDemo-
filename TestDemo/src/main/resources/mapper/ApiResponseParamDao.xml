@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shixiang.demo.dao.ApiResponseParamDao">
+
+    <resultMap type="com.shixiang.demo.entity.ApiResponseParam" id="ApiResponseParamMap">
+        <result property="responseParamId" column="response_param_id" jdbcType="INTEGER"/>
+        <result property="apiId" column="api_id" jdbcType="INTEGER"/>
+        <result property="paramName" column="param_name" jdbcType="VARCHAR"/>
+        <result property="colName" column="col_name" jdbcType="VARCHAR"/>
+        <result property="dataType" column="data_type" jdbcType="VARCHAR"/>
+        <result property="demoValue" column="demo_value" jdbcType="VARCHAR"/>
+        <result property="paramDesc" column="param_desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ApiResponseParamMap">
+        select
+          response_param_id, api_id, param_name, col_name, data_type, demo_value, param_desc
+        from test.api_response_param
+        where response_param_id = #{responseParamId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ApiResponseParamMap">
+        select
+          response_param_id, api_id, param_name, col_name, data_type, demo_value, param_desc
+        from test.api_response_param
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ApiResponseParamMap">
+        select
+          response_param_id, api_id, param_name, col_name, data_type, demo_value, param_desc
+        from test.api_response_param
+        <where>
+            <if test="responseParamId != null">
+                and response_param_id = #{responseParamId}
+            </if>
+            <if test="apiId != null">
+                and api_id = #{apiId}
+            </if>
+            <if test="paramName != null and paramName != ''">
+                and param_name = #{paramName}
+            </if>
+            <if test="colName != null and colName != ''">
+                and col_name = #{colName}
+            </if>
+            <if test="dataType != null and dataType != ''">
+                and data_type = #{dataType}
+            </if>
+            <if test="demoValue != null and demoValue != ''">
+                and demo_value = #{demoValue}
+            </if>
+            <if test="paramDesc != null and paramDesc != ''">
+                and param_desc = #{paramDesc}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="responseParamId" useGeneratedKeys="true">
+        insert into test.api_response_param(api_id, param_name, col_name, data_type, demo_value, param_desc)
+        values (#{apiId}, #{paramName}, #{colName}, #{dataType}, #{demoValue}, #{paramDesc})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.api_response_param
+        <set>
+            <if test="apiId != null">
+                api_id = #{apiId},
+            </if>
+            <if test="paramName != null and paramName != ''">
+                param_name = #{paramName},
+            </if>
+            <if test="colName != null and colName != ''">
+                col_name = #{colName},
+            </if>
+            <if test="dataType != null and dataType != ''">
+                data_type = #{dataType},
+            </if>
+            <if test="demoValue != null and demoValue != ''">
+                demo_value = #{demoValue},
+            </if>
+            <if test="paramDesc != null and paramDesc != ''">
+                param_desc = #{paramDesc},
+            </if>
+        </set>
+        where response_param_id = #{responseParamId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from test.api_response_param where response_param_id = #{responseParamId}
+    </delete>
+    <!--查询单个-->
+    <select id="findRequsetParamByApiId" resultMap="ApiResponseParamMap">
+    select
+    response_param_id, api_id, param_name, col_name, data_type, demo_value, param_desc
+    from test.api_response_param
+        where api_id = ${apiId}
+        </select>
+</mapper>

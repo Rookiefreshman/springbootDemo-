@@ -1,0 +1,17 @@
+#zuul网关代发服务端口地址
+server:
+  port: 8888
+#zuul:
+#  routes:
+#    test:
+#      path:  /aaa/** #代理转发单体服务应用
+#    #      加入以上配置后，发送给http://localhost:8888/test的所有请求会被转发到8090端口。
+#    b:
+#      url: https://www.cnblogs.com
+zuul:
+  routes:
+    producer:
+      url: http://localhost:9002
+
+
+

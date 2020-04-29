@@ -1,0 +1,38 @@
+{
+  "name" : "ApiServiceInfo",
+  "comment" : null,
+  "fullColumn" : [ {
+    "name" : "apiServiceId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "apiId",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "serviceHost",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "servicePath",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  } ],
+  "pkColumn" : null,
+  "otherColumn" : null,
+  "savePackageName" : "com.shixiang.demo",
+  "savePath" : "./TestDemo/src/main/java/com/shixiang/demo",
+  "saveModelName" : "TestDemo"
+}

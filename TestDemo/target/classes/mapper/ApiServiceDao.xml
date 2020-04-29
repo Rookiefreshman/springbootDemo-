@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shixiang.demo.dao.ApiServiceDao">
+
+    <resultMap type="com.shixiang.demo.entity.ApiService" id="ApiServiceMap">
+        <result property="apiId" column="api_id" jdbcType="INTEGER"/>
+        <result property="apiName" column="api_name" jdbcType="VARCHAR"/>
+        <result property="apiNameEn" column="api_name_en" jdbcType="VARCHAR"/>
+        <result property="apiPath" column="api_path" jdbcType="VARCHAR"/>
+        <result property="protocal" column="protocal" jdbcType="VARCHAR"/>
+        <result property="requestMode" column="request_mode" jdbcType="VARCHAR"/>
+        <result property="apiDesc" column="api_desc" jdbcType="VARCHAR"/>
+        <result property="apiMode" column="api_mode" jdbcType="VARCHAR"/>
+        <result property="timeout" column="timeout" jdbcType="INTEGER"/>
+        <result property="responseType" column="response_type" jdbcType="VARCHAR"/>
+        <result property="responsePageFlag" column="response_page_flag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ApiServiceMap">
+        select
+          api_id, api_name, api_name_en, api_path, protocal, request_mode, api_desc, api_mode, timeout, response_type, response_page_flag
+        from test.api_service
+        where api_id = #{apiId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ApiServiceMap">
+        select
+          api_id, api_name, api_name_en, api_path, protocal, request_mode, api_desc, api_mode, timeout, response_type, response_page_flag
+        from test.api_service
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ApiServiceMap">
+        select
+          api_id, api_name, api_name_en, api_path, protocal, request_mode, api_desc, api_mode, timeout, response_type, response_page_flag
+        from test.api_service
+        <where>
+            <if test="apiId != null">
+                and api_id = #{apiId}
+            </if>
+            <if test="apiName != null and apiName != ''">
+                and api_name = #{apiName}
+            </if>
+            <if test="apiNameEn != null and apiNameEn != ''">
+                and api_name_en = #{apiNameEn}
+            </if>
+            <if test="apiPath != null and apiPath != ''">
+                and api_path = #{apiPath}
+            </if>
+            <if test="protocal != null and protocal != ''">
+                and protocal = #{protocal}
+            </if>
+            <if test="requestMode != null and requestMode != ''">
+                and request_mode = #{requestMode}
+            </if>
+            <if test="apiDesc != null and apiDesc != ''">
+                and api_desc = #{apiDesc}
+            </if>
+            <if test="apiMode != null and apiMode != ''">
+                and api_mode = #{apiMode}
+            </if>
+            <if test="timeout != null">
+                and timeout = #{timeout}
+            </if>
+            <if test="responseType != null and responseType != ''">
+                and response_type = #{responseType}
+            </if>
+            <if test="responsePageFlag != null and responsePageFlag != ''">
+                and response_page_flag = #{responsePageFlag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="apiId" useGeneratedKeys="true">
+        insert into test.api_service(api_name, api_path, protocal, request_mode, api_desc, api_mode, timeout, response_type, response_page_flag)
+        values (${apiName}, ${apiPath},
+        ${protocal},
+        ${requestMode},
+        ${apiDesc}, ${apiMode},${timeout}, ${responseType}, ${responsePageFlag})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.api_service
+        <set>
+            <if test="apiName != null and apiName != ''">
+                api_name = #{apiName},
+            </if>
+            <if test="apiPath != null and apiPath != ''">
+                api_path = #{apiPath},
+            </if>
+            <if test="protocal != null and protocal != ''">
+                protocal = #{protocal},
+            </if>
+            <if test="requestMode != null and requestMode != ''">
+                request_mode = #{requestMode},
+            </if>
+            <if test="apiDesc != null and apiDesc != ''">
+                api_desc = #{apiDesc},
+            </if>
+            <if test="apiMode != null and apiMode != ''">
+                api_mode = #{apiMode},
+            </if>
+            <if test="timeout != null">
+                timeout = #{timeout},
+            </if>
+            <if test="responseType != null and responseType != ''">
+                response_type = #{responseType},
+            </if>
+            <if test="responsePageFlag != null and responsePageFlag != ''">
+                response_page_flag = #{responsePageFlag},
+            </if>
+        </set>
+        where api_id = #{apiId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from test.api_service where api_id = #{apiId}
+    </delete>
+
+<!--    动态解析sql查询表-->
+<select id="DynamicSelect" parameterType="java.lang.String"
+        resultType="java.util.Map" statementType="STATEMENT">
+    SELECT ${field} from
+    ${tableName}
+    <where>
+        <if test="conditions!=null and conditions.size()!=0">
+            <foreach collection="conditions" item="condition"
+                     index="index"  separator=",">
+                ${condition.attr}=${condition.value}
+            </foreach>
+        </if>
+    </where>
+
+
+
+</select>
+
+
+    <!--    动态解析sql查询表  resultType="java.util.Map" -->
+    <select id="selectByTableNameAndPrimaryAttr" resultType="java.util.Map" statementType="STATEMENT">
+        SELECT ${field} from
+        ${tableName}
+
+        <where>
+             <if test="conditions!=null and conditions.size()!=0">
+                <foreach collection="conditions" item="condition"
+                         index="index"  separator=" and ">
+                    ${condition.attr}='${condition.value}'
+
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <update id="updateByTableName" statementType="STATEMENT">
+        update ${tableName} set
+        <if test="changeList!=null and changeList.size()!=0">
+            <foreach collection="changeList" item="change"
+                     index="index"   separator=",">
+                ${change.attr}= "${change.value}"
+            </foreach>
+        </if>
+        <where>
+            <if test="conditions!=null and conditions.size()!=0">
+                <foreach collection="conditions" item="condition"
+                         index="index"  separator=" and ">
+                    ${condition.attr}= '${condition.value}'
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <insert id="insertInfo"   useGeneratedKeys="true" >
+        insert  into ${tableName}
+        <foreach collection="changeList" item="change" open="(" close=")" separator="," >
+            ${change.attr}
+        </foreach>
+        values
+        <foreach collection="changeList"  item="change" open="(" close=")" separator=",">
+            '${change.value}'
+        </foreach>
+    </insert>
+
+    <delete id="deleteInfo">
+        delete from ${tableName}
+        <where>
+            <if test="conditions!=null and conditions.size()!=0">
+                <foreach collection="conditions" item="condition"
+                         index="index"  separator=" and ">
+                    ${condition.attr} = '${condition.value}'
+                </foreach>
+            </if>
+        </where>
+
+
+    </delete>
+
+<select id="findServiceByApiNameEn" resultMap="ApiServiceMap">
+    select * from api_service
+    where   api_name_en = "${apiNameEn}"
+
+</select>
+
+</mapper>
